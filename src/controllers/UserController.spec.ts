@@ -2,10 +2,12 @@ import { UserController } from "./UserController"
 import { makemockResponse } from "../__mocks__/mockResponse.mock"
 import { Request } from "express"
 import { UserService } from "../services/UserService"
+import { makemockRequest } from "../__mocks__/mockResquest.mock"
 
 const mockUserService = {
         createUser: jest.fn(),
-        deleteUser: jest.fn()
+        deleteUser: jest.fn(),
+        getUser: jest.fn()
 }
 
 jest.mock("../services/UserService", () => {
@@ -84,4 +86,16 @@ describe("UserController", () => {
         expect(mockResponse.state.status).toBe(200)
         expect(mockResponse.state.json).toMatchObject({ message: "Usuário excluído com sucesso" })
     })
+
+    it("Deve retornar o usuario com o userId informado", () => {
+        const mockRequest = makemockRequest({
+            params: {
+            userId: "123456"
+        }
+        }) 
+
+        userController.getUser(mockRequest, mockResponse)
+        expect(mockUserService.getUser).toHaveBeenCalledWith("123456")
+        expect(mockResponse.state.status).toBe(200)
+     })
 })
