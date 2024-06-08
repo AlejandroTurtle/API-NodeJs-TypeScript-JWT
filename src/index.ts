@@ -1,5 +1,7 @@
+import "reflect-metadata"
 import express, {Request, Response} from "express"
 import { router } from "./routes"
+
 
 const app = express()
 
